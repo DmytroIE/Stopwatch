@@ -41,13 +41,12 @@ class Stopwatch extends Component {
 
   handleLap = () => {
     if (this.state.status !== RUN) return;
-    // this.setState({
-    //   ...this.state,
-    //   laps: this.state.laps.push(this.state.timeText),
-    // });
-    this.state.laps.push(this.state.timeText);
+
+    const newLaps = this.state.laps;
+    newLaps.push(this.state.timeText);
     this.setState({
       ...this.state,
+      laps: newLaps,
     });
 
   }
@@ -62,10 +61,18 @@ class Stopwatch extends Component {
     });
   }
 
-  onTick(newText){  // https://stackoverflow.com/questions/36299174/setinterval-in-a-react-app/36299242
+  onTick(newText) {  // https://stackoverflow.com/questions/36299174/setinterval-in-a-react-app/36299242
     this.setState({
       ...this.state,
       timeText: newText,
+    });
+  }
+
+  deleteLap = (index) => {
+    const laps = this.state.laps;
+    this.setState({
+      ...this.state,
+      laps: laps.filter((item, idx) => {return idx !== index}),
     })
   }
 
@@ -77,17 +84,23 @@ class Stopwatch extends Component {
               <Button 
                 text = { this.state.status === STOP? 'Start' : (this.state.status === RUN ? 'Pause' :'Continue') }
                 onClick = {this.handleStart}
+                isDisabled = {false}
+                additionalClass = {'stopwatch__button--main'}
               />
               <Button 
                 text = 'Lap'
                 onClick = {this.handleLap}
+                isDisabled = {false}
+                additionalClass = {'stopwatch__button--main'}
               />
               <Button 
                 text = 'Reset'
                 onClick = {this.handleReset}
+                isDisabled = {this.state.status !== RUN}
+                additionalClass = {'stopwatch__button--main'}
               />
             </div>
-            <LapsField laps = {this.state.laps} />
+            <LapsField laps = {this.state.laps} deleteLap = {this.deleteLap}/>
 
         </div>
     );

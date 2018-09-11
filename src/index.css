@@ -41,20 +41,32 @@
 
 
 .stopwatch__button{
-  padding: 10px 5px;
-  width: 110px;
+
   background-color: rgb(89, 92, 226);
-  color: #fff;
-  font-size: 18px;
+  
+  
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   border: none;
   border-radius: 3px;
   cursor: pointer;
-  overflow-wrap: break-word;  
+  overflow-wrap: break-word;   
+  color: #fff; 
   /* word-wrap: break-word; */
   /* word-break: break-all; */
+}
+
+.stopwatch__button--main{
+  padding: 10px 5px;
+  width: 110px;
+  font-size: 18px;
+}
+
+.stopwatch__button--aux{
+  padding: 5px 5px;
+  width: 50px;
+  font-size: 10px;
 }
 
 .stopwatch__button[disabled]{
@@ -83,6 +95,9 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   color: #888;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .laps-item:last-child{
   margin-bottom: 0;
