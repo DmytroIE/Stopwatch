@@ -2,47 +2,53 @@ import React, { Component } from 'react';
 import Timer from './utils/timer';
 import Button from './button';
 import Display from './display';
+import LapsField from './lapsField';
 import './index.css';
 
+const STOP = 0;
+const RUN = 1;
+const PAUSE = 2;
 
 class Stopwatch extends Component {
   constructor(props){
     super(props);
 
     this.state = {
-      isRunning: false,
-      onPause: true,
+      status: STOP,
       timeText: '00:00.0',
+      laps: [],
     }
 
     this.timer = new Timer();
   }
 
   handleStart = () => {
-    // Вот это место!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (!this.state.isRunning){
-      this.setState({
-        ...this.state,
-        isRunning: true,
-      });
-    }
 
-    if (this.state.onPause) {
+    if (this.state.status !== RUN) {
       this.timer.start(this.onTick.bind(this));
       this.setState({
         ...this.state,
-        onPause: false,
+        status: RUN,
       });
     } else {
       this.timer.pause();
       this.setState({
         ...this.state,
-        onPause: true,
+        status: PAUSE,
       });
     }
   }
 
   handleLap = () => {
+    if (this.state.status !== RUN) return;
+    // this.setState({
+    //   ...this.state,
+    //   laps: this.state.laps.push(this.state.timeText),
+    // });
+    this.state.laps.push(this.state.timeText);
+    this.setState({
+      ...this.state,
+    });
 
   }
 
@@ -50,9 +56,9 @@ class Stopwatch extends Component {
     this.timer.reset();
     this.setState({
       ...this.state,
-      isRunning: false,
-      onPause: true,
+      status: STOP,
       timeText: '00:00.0',
+      laps: [],
     });
   }
 
@@ -69,7 +75,7 @@ class Stopwatch extends Component {
             <Display text = {this.state.timeText}/>
             <div className="stopwatch__buttons">
               <Button 
-                text = { !this.state.isRunning? 'Start' : (this.state.onPause? 'Continue' :'Pause') }
+                text = { this.state.status === STOP? 'Start' : (this.state.status === RUN ? 'Pause' :'Continue') }
                 onClick = {this.handleStart}
               />
               <Button 
@@ -81,6 +87,8 @@ class Stopwatch extends Component {
                 onClick = {this.handleReset}
               />
             </div>
+            <LapsField laps = {this.state.laps} />
+
         </div>
     );
   }

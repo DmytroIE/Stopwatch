@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const Button = props => {
   return (
-    <button className = 'stopwatch__button' onClick = {props.onClick}>{props.text}</button>
+    <button disabled = {false} className = 'stopwatch__button' onClick = {props.onClick}>{props.text}</button>
   );
 }
 
